@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>ArcGIS Map</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css" />
+  <script src="https://js.arcgis.com/4.30/"></script>
+
+  <script>
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/GeoJSONLayer"
+    ], function(esriConfig, Map, MapView, GeoJSONLayer) {
+      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurGOndvn56RaIuEG-ymH-92haus5XOWjwfQcNHTRTeMO7efrrwIO_P1WvjAaKi6OQjJ3GIY_futaMIJKN2YL-EYHTHG9Rv2I800yOHi-R0CETmNtIv1jHJiXDbTrmTiJeXLEP-6WMH6Zj1mNwmZT3z5l5nB_2nXXSVTEuDcqBFo737s7VpsbqFXNy4GrGXkfT9juBGmdeoQdWJ8oZqkquRShfozv5LIG5tRroi4bCPx5GAT1_IuAFCiIJ";
+
+      const map = new Map({
+        basemap: "arcgis/topographic" // basemap styles service
+      });
+
+      const view = new MapView({
+        map: map,
+        center: [-118.805, 34.027], // Longitude, latitude
+        zoom: 13, // Zoom level
+        container: "viewDiv" // Div element
+      });
+
+      // URL to your GeoJSON file
+      var geojsonUrl = "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/GeoJson/FeatureServer";
+
+      // Define the popup template
+      const template = {
+        title: "Feature Info",
+        content: "{*}"
+      };
+
+      // Define the renderer
+      const renderer = {
+        type: "simple",
+        symbol: {
+          type: "simple-marker",
+          color: "orange",
+          outline: {
+            color: "white"
+          }
+        }
+      };
+
+      // Create the GeoJSONLayer
+      var geojsonLayer = new GeoJSONLayer({
+        url: geojsonUrl,
+        popupTemplate: template,
+        renderer: renderer
+      });
+
+      // Add the GeoJSONLayer to the map
+      map.add(geojsonLayer);
+    });
+  </script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
